@@ -1,0 +1,44 @@
+{% extends 'twitter/base.html' %}
+{% block contenido %}
+<section>
+	{% if tweets|length %}
+		{% for tweet in tweets %}
+			<article>
+				<header>
+					<h3>{{ tweet.user.get_full_name }} (@<a href="/twitter/profile/{{ tweet.user }}">{{ tweet.user }}</a>)</h3>
+				</header>
+				{{ tweet.filtrar|safe|linebreaksbr }}
+				<footer>
+					<p>
+						{% if tweet.retwitteado %}
+							<strong>Retwitteado por <a href="/twitter/profile/{{ tweet.retweetter }}/">@{{ tweet.retweetter }}</a></strong>
+							{% if tweet.retweetter == logueado %}<a href="/twitter/borrar/{{ tweet.rt_id }}/">Deshacer retweet</a>{% endif %}<br>
+						{% endif %}
+						{% if tweet.respuesta %}
+							<a href="/twitter/conversacion/{{ tweet.id }}/">Ver conversacion completa</a><br>
+						{% endif %}
+						<strong>Publicado: {{ tweet.fecha }}</strong>
+						<a href="/twitter/retweet/{{ tweet.id }}/">Retweet</a>
+						<a href="/twitter/responder/{{ tweet.id }}/">Responder</a>
+						{% if tweet.user == logueado %}
+							<a href="/twitter/borrar/{{ tweet.id }}/">Borrar</a>
+						{% endif %}
+					</p>
+				</footer>
+			</article>
+		{% endfor %}
+	{% else %}
+		<header>
+			<h3>No hay ningun tweet</h3>
+		</header>
+	{% endif %}
+		<footer>
+			<div class="pagination">
+				<ul>
+				<li class="prev{% if page < 2 %} disabled{% endif %}"><a href="/twitter/{{ page_prefix }}page/{{ prev }}/{{ page_sufix }}">&larr; Anterior</a></li>
+				<li class="next"><a href="/twitter/{{ page_prefix }}page/{{ next }}/{{ page_sufix }}">Siguiente &rarr;</a></li>
+				</ul>
+			</div>
+		</footer>
+</section>
+{% endblock %}

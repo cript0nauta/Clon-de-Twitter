@@ -1,0 +1,35 @@
+Clon de Twitter programado para Django
+v2.0
+
+sh4r3m4n
+twitter.com/sh4r3m4n
+licenciapaprahackear.wordpress.com
+
+Esta aplicación se encuentra bajo licencia Creative Commons, visible en
+http://creativecommons.org/licenses/by/2.5/ar/
+
+Instalación:
+1) Descomprima los ficheros del archivo descargado.
+2) Copie el directorio twitter al directorio de su sitio Django
+3) Copie el directorio templates al directorio de su sitio Django donde se
+   encuentren las plantillas
+4) Copie el directorio static al directorio de su sitio Django donde se
+   encuentren los archivos estáticos
+5) En el archivo settings.py de su sitio Django, inserte la siguiente línea
+   en INSTALLED_APPS:
+    'twitter',
+6) Inserte la siguiente línea en el urlpatterns del archivo urls.py de su
+   sitio Django:
+    url('^twitter/', include('twitter.urls')),
+7) Ejecute el comando manage.py syncdb
+8) Ponga en ejecución el servidor ejecutando manage.py runserver
+
+Cambios respecto a la primera versión(entre otros):
+.Se corrige una vulnerabilidad que permitía ver tweets borrados
+.Se agregan trending topics y sugerencias de usuarios a seguir en el home
+.La página se actualiza constantemente mientras no estemos escribiendo
+.Se agrega un contador de caracteres restantes
+.Se mejora el formulario de búsqueda
+.Formulario de registro más sencillo
+.Es posible instalarlo en cualquier path. En la versión anterior tenía que
+ estar obligatoriamente en el path /twitter/

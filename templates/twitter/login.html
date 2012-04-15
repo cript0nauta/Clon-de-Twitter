@@ -1,0 +1,39 @@
+{% extends 'twitter/base.html' %}
+{% block contenido %}
+	<div class="row">
+		<div class="span3">
+			<h2>Bienvenido a Twitter.</h2>
+			<p>Descubre lo que está pasando ahora, con las personas y grupos que te interesan.</p>
+		</div>
+		<div class="span3">
+			<h2>Login</h2>
+			<p>
+				<form class="form-inline" action="/twitter/login/process/" method="post">
+					{{ mensaje_login }}
+					{% csrf_token %}
+					<input type="text" name="user" placeholder="Nombre de usuario"><br>
+					<input type="password" name="pass" placeholder="Contraseña"><br>
+					<input class="btn" type="submit" value="Log in">
+				</form>
+			</p>
+		</div>
+		<div class="span6">
+			<h2>Registro</h2>
+			<p>
+				{{ mensaje_register }}
+				<form action="/twitter/register/" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="procesa" value="1">
+					<input type="text" name="user" placeholder="Usuario"><br>
+					<input type="password" name="pass" placeholder="Password">
+					<input type="password" name="pass2" placeholder="Repite tu password"><br>
+					<input type="text" name="firstname" placeholder="Nombre">
+					<input type="text" name="lastname" placeholder="Apellido"><br>
+					<input type="text" name="email" placeholder="E-Mail: ">
+					<input type="text" name="ubicacion" placeholder="Ubicacion"><br>
+					<textarea placeholder="Biografia corta(160 caracteres): " name="bio" maxlength="140" rows="5"></textarea><br>
+					<input class="btn" type="submit" value="Register">
+				</form>
+			</p>
+		</div>
+{% endblock %}

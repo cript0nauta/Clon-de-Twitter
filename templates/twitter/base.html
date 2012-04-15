@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<title>{% block titulo %}Twitter{% endblock %}</title>
+	<!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+	<link href="/static/twitter/css/bootstrap.min.css" rel="stylesheet">
+	<style>body { padding-top: 60px; } </style>
+	<link href="/static/twitter/css/bootstrap-responsive.min.css" rel="stylesheet">
+</head>
+<body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/twitter/js/bootstrap.min.js"></script>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="/twitter/">Twitter</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li class="active"><a href="/twitter/">Home</a></li>
+						<li><a data-toggle="modal" href="#contacto">Contacto</a></li>
+						{% if logueado %}
+							<li>
+								<div class="btn-group">
+							  <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+							    @{{ logueado.username }} 
+							    <span class="caret"></span>
+							  </a>
+							  <ul class="dropdown-menu">
+							    <li><a href="/twitter/">Home</a></li>
+							    <li><a href="/twitter/profile/{{ logueado.username }}/">Mi perfil</a></li>
+							    <li><a href="/twitter/configuracion/">Configuración de la cuenta</a></li>
+							    <li class="divider"></li>
+							    <li><a href="/twitter/logout/">Cerrar sesión</a></li>
+							  </ul>
+							</div>
+							</li>
+						{% endif %}
+					</ul>
+					{% if logueado %}
+						<form action="/twitter/buscar/" method="get">
+							<input type="text" name="busqueda" value="{{ busqueda }}" placeholder="Búsqueda">
+							<input type="submit" value="Buscar" class="btn btn-success">
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="modal hide fade" id="contacto">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Contacto con el autor</h3>
+  </div>
+  <div class="modal-body">
+    <p>
+    	E-Mail: <a href="mailto:shareman1204@gmail.com">shareman1204@gmail.com</a><br>
+    	Blog: <a href="http://licenciaparahackear.wordpress.com" target="_blank">licenciaparahackear.wordpress.com</a><br>
+    	Twiter: <a href="http://twitter.com/sh4r3m4n" target="_blank">sh4r3m4n</a><br>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>
+  </div>
+</div>
+<div class="container">
+	<div class="row">
+		{% if logueado %}
+		<div class="span4">
+			<h3>{% block fasttweet %}Tweet rápido{% endblock %}</h2>
+				<form action="/twitter/tweet/" method="post">
+					{% csrf_token %}
+					{% block respuesta %}{% endblock %}
+					<p>
+						<textarea name="content" maxlength="140" rows="5" cols="50">{% block textarea %}{% endblock %}</textarea><br>
+						<input class="btn btn-success" type="submit" value="Tweetear">
+					</p>
+				</form>
+			<section>
+				<header>
+					<h3>{{ logueado.get_full_name }} (<a href="/twitter/profile/{{ logueado }}/">@{{ logueado }}</a>)</h3>
+					<div class="pagination">
+						<ul>
+							<li><a href="/twitter/profile/{{ logueado }}/">{{ ntweets }} tweet{{ ntweets|pluralize }}</a></li>
+							<li><a href="/twitter/seguidores/{{ logueado }}/">{{ u_seguidores }} seguidores</a></li>
+							<li><a href="/twitter/siguiendo/{{ user.username }}/">{{ u_siguiendo }} siguiendo</a></li>
+						</ul>
+					</div>
+				</header>
+			</section>
+		</div>
+		{% endif %}
+		<div class="span{% if logueado %}8{% else %}12{% endif %}">
+			{% block contenido %}
+			{{ mensaje }}
+			{% endblock %}
+		</div>
+	</div>
+</div>
+<footer>
+	<p>Clon de twitter creado en Django por <a href="#contacto" data-toggle="modal">sh4r3m4n</a></p>
+</footer>
+</body>
+</html>
